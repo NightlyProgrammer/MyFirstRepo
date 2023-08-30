@@ -4,22 +4,52 @@ class Player(pygame.sprite.Sprite):
     def __init__(self,groups,position):
         super().__init__(groups)
         self.image = pygame.Surface((64,128))
+        self.image.fill((255,0,0))
         self.rect = self.image.get_rect(bottomleft=position)
-        self.jump_height = -16
 
-    def inputs(self):
-        keys = pygame.keys.get_pressed()
+        self.dir = pygame.math.Vector2(0,0)
+        self.jump_height = -2
+        self.jump_button_pressed = False
+        self.gravity = 0.008
+        self.speed = 0.8
+        self.on_ground = False
+    def collision(self,sprites,x=False,y=False):
+        for sprite in sprites:
+            if sprite.rect.colliderect(self.rect):
+                if x:
+                    if self.dir.x < 0:
+                        self.rect.left = sprite.rect.right
+                    elif self.dir.x > 0:
+                        self.rect.right = sprite.rect.left
+                elif y:
+                    if self.dir.y < 0:
+                        self.rect.top = sprite.rect.bottom
+                    elif self.dir.y > 0:
+                        self.rect.bottom = sprite.rect.top
+                        self.dir.y = 0
+                        self.on_ground = True
+                    
+    def inputs(self,sprites,delta):
+        keys = pygame.key.get_pressed()
 
+        self.dir.x = 0
         if keys[pygame.K_a]:
             self.dir.x = -1
         elif keys[pygame.K_d]:
             self.dir.x = 1
 
-        if keys[pygame.K_w] or keys[pygame.K_SPACE]:
+        if (keys[pygame.K_w] or keys[pygame.K_SPACE]) and self.on_ground and not self.jump_button_pressed:
             self.dir.y = self.jump_height
+            self.on_ground = False
+            self.jump_button_pressed = True
+        elif not(keys[pygame.K_w] or keys[pygame.K_SPACE]):
+            self.jump_button_pressed = False
         
-        self.rect.x += self.dir.x*delta
+        self.rect.x += self.dir.x*self.speed*delta
+        self.collision(sprites,x=True)
         self.rect.y += self.dir.y*delta
-        self.dir.y += 1
-    def update(self):
-        self.inputs()
+        self.collision(sprites,y=True)
+        self.dir.y += delta*self.gravity
+
+    def update(self,sprites,delta):
+        self.inputs(sprites,delta)
