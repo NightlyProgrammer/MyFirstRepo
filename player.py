@@ -8,10 +8,10 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(bottomleft=position)
 
         self.dir = pygame.math.Vector2(0,0)
-        self.jump_height = -2
+        self.jump_height = -1.3
         self.jump_button_pressed = False
-        self.gravity = 0.008
-        self.speed = 0.8
+        self.gravity = 0.008*0.8
+        self.speed = 0.5
         self.on_ground = False
     def collision(self,sprites,x=False,y=False):
         for sprite in sprites:
