@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self,groups,position):
         super().__init__(groups)
-        self.image = pygame.Surface((64,128))
+        self.image = pygame.Surface((64,128)) 
         self.image.fill((255,0,0))
         self.rect = self.image.get_rect(bottomleft=position)
 
@@ -13,7 +13,14 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.008*0.8
         self.speed = 0.5
         self.on_ground = False
+
     def collision(self,sprites,x=False,y=False):
+        if y:
+            if self.rect.bottom > 0:#check if player is colliding with the ground
+                self.rect.bottom = 0
+                self.dir.y = 0
+                self.on_ground = True
+                return
         for sprite in sprites:
             if sprite.rect.colliderect(self.rect):
                 if x:
