@@ -10,11 +10,11 @@ class CheckPoint(pygame.sprite.Sprite):
         self.purpose = purpose#wether its a checkpoint to save the progress or to go to the next level
         self.level_name = level
 
-    def update(self,nextlevel,player,settings):
+    def update(self,nextlevel,player,settings,spritesheet):
         if self.rect.colliderect(player.rect):
             if self.purpose == "save":
                 data = {self.level_name:[x/(64*((i==1)*-2+1)) for i,x in enumerate(self.rect.bottomleft)]}
                 with open("game data/level_progress.json","r+") as file:
                     json.dump(data,file)
             else:#load next level
-                nextlevel(self.purpose,settings)#self.purpse = next level file name,settings is a constant with fps,screensize etc..
+                nextlevel(self.purpose,settings,spritesheet)#self.purpse = next level file name,settings is a constant with fps,screensize etc..

@@ -3,14 +3,14 @@
         "Position":[0,4]
     }, 
     "Tiles":[
-        {"Position":[1,1],"Type":"topleft"},
-        {"Position":[2,2],"Type":"topleft"},
-        {"Position":[3,3],"Type":"topmiddle"},
-        {"Position":[4,2],"Type":"topright"},
-        {"Position":[5,1],"Type":"topmiddle"},
-        {"Position":[6,2],"Type":"topleft"},
-        {"Position":[7,2],"Type":"topmiddle"},
-        {"Position":[8,2],"Type":"topright"}
+        {"Position":[1,1],"Name":"grass","Type":"topleft"},
+        {"Position":[2,2],"Name":"grass","Type":"topleft"},
+        {"Position":[3,3],"Name":"grass","Type":"topmiddle"},
+        {"Position":[4,2],"Name":"grass","Type":"topright"},
+        {"Position":[5,1],"Name":"grass","Type":"topmiddle"},
+        {"Position":[6,2],"Name":"grass","Type":"topleft"},
+        {"Position":[7,2],"Name":"grass","Type":"topmiddle"},
+        {"Position":[8,2],"Name":"grass","Type":"topright"}
     ],
     "Checkpoints":[
         {"Position":[10,0]},

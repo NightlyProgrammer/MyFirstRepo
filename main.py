@@ -1,8 +1,6 @@
 import pygame
 import json
-from player import Player
-from camera import CameraGroup
-from tiles import Tile
+from tiles import load_tile_spritesheet
 from level import Level
 
 def load_settings(path):
@@ -13,8 +11,10 @@ def main():
     #Load all the constants from a json file
     SETTINGS = load_settings("settings.json")
     pygame.display.set_mode(SETTINGS["SCREEN_SIZE"])
-    level1 = Level("assets/levels/level1.json")
-    level1.run(SETTINGS)
+    tile_spritesheet =load_tile_spritesheet("assets/graphics/tiles_spritesheet.png",64,["backend","grass"],["topleft","topmiddle","topright"])#load in the spritesheet
+    print(tile_spritesheet)
+    level1 = Level("assets/levels/level1.json",tile_spritesheet)
+    level1.run(SETTINGS,tile_spritesheet)
 
 if __name__ == '__main__':
     pygame.init()
