@@ -5,10 +5,11 @@ from tiles import Tile,load_tile_spritesheet
 from player import Player
 from camera import CameraGroup
 from checkpoint import CheckPoint
+from os import listdir
 
 class Level:
     def __init__(self,path,tile_spritesheet):
-        self.camera = CameraGroup(pygame.image.load("assets/graphics/ground.png").convert_alpha())
+        self.camera = CameraGroup(pygame.image.load("assets/graphics/ground.png").convert_alpha(),[pygame.transform.scale(pygame.image.load("assets/graphics/bg/"+img).convert(),(1280,720)) if i==0 else pygame.transform.scale(pygame.image.load("assets/graphics/bg/"+img).convert_alpha(),(1280,720)) for i,img in enumerate(listdir("assets/graphics/bg"))])#i know this looks extremly messy,this is just a temporary solution until i will just read them out of a game settings file
         self.name = path.split('/')[-1].split('.')[0]#get name from path,used for save data
         self.load_level(path,tile_spritesheet)
 

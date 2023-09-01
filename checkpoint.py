@@ -13,8 +13,15 @@ class CheckPoint(pygame.sprite.Sprite):
     def update(self,nextlevel,player,settings,spritesheet):
         if self.rect.colliderect(player.rect):
             if self.purpose == "save":
-                data = {self.level_name:[x/(64*((i==1)*-2+1)) for i,x in enumerate(self.rect.bottomleft)]}
-                with open("game data/level_progress.json","r+") as file:
-                    json.dump(data,file)
+                with open("game data/level_progress.json","r") as file:
+                    try:
+                        progress_data = json.load(file)
+                    except:#if file is empty
+                        progress_data = {}
+
+                progress_data[self.level_name] = [x/(64*((i==1)*-2+1)) for i,x in enumerate(self.rect.bottomleft)]
+                with open("game data/level_progress.json","w") as file:
+                    json.dump(progress_data,file)
+
             else:#load next level
                 nextlevel(self.purpose,settings,spritesheet)#self.purpse = next level file name,settings is a constant with fps,screensize etc..
