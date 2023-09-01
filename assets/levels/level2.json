@@ -1,0 +1,19 @@
+{
+    "Player":{
+        "Position":[0,4]
+    }, 
+    "Tiles":[
+        {"Position":[1,1],"Type":"topleft"},
+        {"Position":[2,2],"Type":"topleft"},
+        {"Position":[3,3],"Type":"topmiddle"},
+        {"Position":[4,2],"Type":"topright"},
+        {"Position":[5,1],"Type":"topmiddle"},
+        {"Position":[6,2],"Type":"topleft"},
+        {"Position":[7,2],"Type":"topmiddle"},
+        {"Position":[8,2],"Type":"topright"}
+    ],
+    "Checkpoints":[
+        {"Position":[10,0]},
+        {"Position":[25,0],"NextLevel":"level1.json"}
+    ]
+}

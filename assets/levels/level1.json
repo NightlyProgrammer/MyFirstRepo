@@ -10,5 +10,9 @@
         {"Position":[5,1],"Type":"topright"},
         {"Position":[6,2],"Type":"topleft"},
         {"Position":[7,3],"Type":"topleft"}
+    ],
+    "Checkpoints":[
+        {"Position":[10,0]},
+        {"Position":[20,0],"NextLevel":"level2.json"}
     ]
 }

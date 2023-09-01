@@ -13,7 +13,6 @@ def main():
     #Load all the constants from a json file
     SETTINGS = load_settings("settings.json")
     pygame.display.set_mode(SETTINGS["SCREEN_SIZE"])
-
     level1 = Level("assets/levels/level1.json")
     level1.run(SETTINGS)
 
