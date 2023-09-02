@@ -11,7 +11,7 @@ def main():
     #Load all the constants from a json file
     SETTINGS = load_settings("settings.json")
     pygame.display.set_mode(SETTINGS["SCREEN_SIZE"])
-    tile_spritesheet =load_tile_spritesheet("assets/graphics/tiles_spritesheet.png",64,["backend","grass"],["topleft","topmiddle","topright"])#load in the spritesheet
+    tile_spritesheet =load_tile_spritesheet("assets/graphics/tiles_spritesheet.png",64,["backend","grass"],["topleft","topmiddle","topright","middleleft","center","middleright","bottomleft","bottommiddle","bottomright"])#load in the spritesheet
     print(tile_spritesheet)
     level1 = Level("assets/levels/level1.json",tile_spritesheet)
     level1.run(SETTINGS,tile_spritesheet)

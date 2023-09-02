@@ -7,9 +7,19 @@
         {"Position":[1,1],"Name":"backend","Type":"topright"},
         {"Position":[3,1],"Name":"grass","Type":"topleft"},
         {"Position":[4,1],"Name":"grass","Type":"topmiddle"},
-        {"Position":[5,1],"Name":"backend","Type":"topright"},
+        {"Position":[5,1],"Name":"grass","Type":"topright"},
         {"Position":[6,2],"Name":"grass","Type":"topleft"},
-        {"Position":[7,3],"Name":"grass","Type":"topleft"}
+        {"Position":[7,3],"Name":"grass","Type":"topleft"},
+
+        {"Position":[-5,1],"Name":"grass","Type":"bottomleft"},
+        {"Position":[-4,1],"Name":"grass","Type":"bottommiddle"},
+        {"Position":[-3,1],"Name":"grass","Type":"bottomright"},
+        {"Position":[-5,2],"Name":"grass","Type":"middleleft"},
+        {"Position":[-4,2],"Name":"grass","Type":"center"},
+        {"Position":[-3,2],"Name":"grass","Type":"middleright"},
+        {"Position":[-5,3],"Name":"grass","Type":"topleft"},
+        {"Position":[-4,3],"Name":"grass","Type":"topmiddle"},
+        {"Position":[-3,3],"Name":"grass","Type":"topright"}
     ],
     "Checkpoints":[
         {"Position":[10,0]},

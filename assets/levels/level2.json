@@ -1,6 +1,6 @@
 {
     "Player":{
-        "Position":[0,4]
+        "Position":[0,0]
     }, 
     "Tiles":[
         {"Position":[1,1],"Name":"grass","Type":"topleft"},

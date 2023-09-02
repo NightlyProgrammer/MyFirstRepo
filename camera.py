@@ -3,11 +3,13 @@ import pygame
 class CameraGroup(pygame.sprite.Group):
     def __init__(self,ground_image=None,bg_imgs=[]):
         super().__init__()
-        self.offset = [0,0]
+        self.offset = [None,None]
         self.ground_surface = ground_image
         self.bg_images = bg_imgs#sorted from furthest to nearest
 
     def custom_draw(self,screen,player):
+        if self.offset == [None,None]:
+            self.offset = screen.get_width()/2-player.rect.centerx,screen.get_height()/2-player.rect.centery
         self.offset = [self.offset[0]+(screen.get_width()/2-(player.rect.centerx+self.offset[0]))*0.03,self.offset[1]+(screen.get_height()/2-(player.rect.centery+self.offset[1]))*0.03]
 
         #draw background with offsets
