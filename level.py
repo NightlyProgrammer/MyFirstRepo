@@ -30,71 +30,31 @@ class Level:
                 except:
                     purpose = "save"
                 CheckPoint([self.camera,self.checkpoints],[x*64*((i==1)*-2+1) for i,x in enumerate(checkpoint["Position"])],purpose,self.name)
-    
-
-    def outro(self,SETTINGS):
-        screen = pygame.display.get_surface()
-        outro_time = 3#1 seconds
-        circle_factor = screen.get_width()/1.5/outro_time#factor to mutiple so that the circle starts as big as the screen
-        outro_surf = pygame.Surface(screen.get_size())
-        time_stamp = pygame.time.get_ticks()
-        while True:#loop where the screen get black(like in tom&jerry)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                    pygame.quit()
-                    exit()
-                time = (pygame.time.get_ticks()-time_stamp)*0.001
-                if time >= outro_time:
-                    break
-                screen.fill((0,0,0))
-                outro_surf.fill((0,0,0))
-                self.camera.custom_draw(screen,self.player)
-
-                pygame.draw.circle(outro_surf,(255,255,255),[self.player.rect.centerx+self.camera.offset[0],self.player.rect.centery+self.camera.offset[1]],(outro_time-time)*circle_factor)
-                screen.blit(outro_surf,(0,0),special_flags=pygame.BLEND_RGB_MULT)
-                pygame.display.flip()
-                pygame.display.set_caption(str(round(self.clock.get_fps())))
-                self.clock.tick(60)
-                
-    def intro(self,SETTINGS):
-        screen = pygame.display.get_surface()
-        intro_ticks = 100
-        intro_surf = pygame.Surface(screen.get_size())
-        font = pygame.font.SysFont(None,300)
-        text = font.render(str(self.name),True,(255,255,255))
-        text_rect = text.get_rect(center=(screen.get_width()/2,screen.get_height()/2))
-
-        run = True
-        while run:#loop where the screen get black(like in tom&jerry)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                    pygame.quit()
-                    exit()
-                intro_ticks -= 1
-                if intro_ticks <= 0:
-                    run = False
-
-                c = int(255/100*(100-intro_ticks))
-                intro_surf.fill((c,c,c))
-
-                self.camera.custom_draw(screen,self.player)
-                c = int(255/100*intro_ticks)
-                text = font.render(self.name,True,(c,c,c),(0,0,0))
-                screen.blit(text,text_rect,special_flags=pygame.BLEND_RGB_ADD)
-                screen.blit(intro_surf,(0,0),special_flags=pygame.BLEND_RGB_MULT)
-                pygame.display.flip()
-                self.clock.tick(60)
 
     def next_level(self,name,SETTINGS,spritesheet):
         self.running = False
-        #self.outro(SETTINGS)
+        outro_time = 3
+        screen = pygame.display.get_surface()
+        clock = pygame.time.Clock()
+        pygame.time.set_timer(pygame.USEREVENT+1,outro_time*1000)
+        run = True
+        timestemp = pygame.time.get_ticks()
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.USEREVENT+1:
+                    run = False
+            time = (pygame.time.get_ticks()-timestemp)*0.001
+            self.camera.custom_draw(screen,self.player)
+            pygame.draw.rect(screen,(0,0,0),pygame.Rect(0,0,screen.get_width(),screen.get_height()/outro_time*time))
+
+            pygame.display.flip()
+            pygame.display.set_caption(str(round(pygame.time.get_ticks()*0.001)))
+            clock.tick(SETTINGS["FPS"])
         Level(f"assets/levels/{name}",spritesheet).run(SETTINGS,spritesheet)
 
     def run(self,SETTINGS,spritesheet):
-
         screen = pygame.display.get_surface()
-        self.clock = pygame.time.Clock()
-        #self.intro(SETTINGS)
+        clock = pygame.time.Clock()
         delta = 0
         self.running = True
 
@@ -110,6 +70,6 @@ class Level:
             self.camera.custom_draw(screen,self.player)
 
             pygame.display.flip()
-            pygame.display.set_caption(str(round(self.clock.get_fps())))
-            delta = self.clock.tick(SETTINGS["FPS"])
+            pygame.display.set_caption(str(round(clock.get_fps())))
+            delta = clock.tick(SETTINGS["FPS"])
         
