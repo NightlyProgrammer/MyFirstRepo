@@ -34,7 +34,12 @@ class Level:
     def intro(self,SETTINGS):
         intro_time = 3
         screen = pygame.display.get_surface()
+        temp_surf = pygame.Surface(screen.get_size())
         clock = pygame.time.Clock()
+
+        font = pygame.font.SysFont(None,300)
+        text = font.render(self.name,True,(255,255,255),(0,0,0))
+        text_rect = text.get_rect(center=(screen.get_width()/2,screen.get_height()/2))
         pygame.time.set_timer(pygame.USEREVENT+1,intro_time*1000)
         run = True
         timestemp = pygame.time.get_ticks()
@@ -42,9 +47,18 @@ class Level:
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT+1:
                     run = False
+            
             time = (pygame.time.get_ticks()-timestemp)*0.001
+
             self.camera.custom_draw(screen,self.player)
-            pygame.draw.rect(screen,(0,0,0),pygame.Rect(0,screen.get_height()-(screen.get_height()/intro_time*(intro_time-time)),screen.get_width(),screen.get_height()/intro_time*(intro_time-time)))
+
+            screen.blit(text,text_rect,special_flags=pygame.BLEND_RGB_ADD)
+            c = max(int(255/intro_time*(intro_time-time)),0)
+            text = font.render(self.name,True,(c,c,c),(0,0,0))
+
+            c = min(int(255/intro_time*time),255)
+            temp_surf.fill((c,c,c))
+            screen.blit(temp_surf,(0,0),special_flags=pygame.BLEND_RGB_MULT)
 
             pygame.display.flip()
             pygame.display.set_caption(str(round(clock.get_fps())))
@@ -80,7 +94,7 @@ class Level:
         delta = 0
         self.running = True
         self.intro(SETTINGS)
-        self.player.no_input = 0.17*10
+        self.player.no_input = 0.17*10#no input for the first 10 frames (meaning the palyer rect wont be updated due to weird high delta value when starting level)
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
