@@ -60,3 +60,6 @@ class Player(pygame.sprite.Sprite):
 
     def update(self,sprites,delta):
         self.inputs(sprites,delta)
+    def just_collision_updates(self,sprites,delta):
+        self.collision(sprites,x=True)
+        self.collision(sprites,y=True)

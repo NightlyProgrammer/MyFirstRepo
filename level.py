@@ -31,25 +31,51 @@ class Level:
                     purpose = "save"
                 CheckPoint([self.camera,self.checkpoints],[x*64*((i==1)*-2+1) for i,x in enumerate(checkpoint["Position"])],purpose,self.name)
 
-    def next_level(self,name,SETTINGS,spritesheet):
-        self.running = False
+    def intro(self,SETTINGS):
+        intro_time = 3
+        screen = pygame.display.get_surface()
+        clock = pygame.time.Clock()
+        pygame.time.set_timer(pygame.USEREVENT+1,intro_time*1000)
+        run = True
+        timestemp = pygame.time.get_ticks()
+        delta = 0
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.USEREVENT+1:
+                    run = False
+            time = (pygame.time.get_ticks()-timestemp)*0.001
+            self.player.just_collision_updates(self.tiles,delta)
+            self.camera.custom_draw(screen,self.player)
+            pygame.draw.rect(screen,(0,0,0),pygame.Rect(0,screen.get_height()-(screen.get_height()/intro_time*(intro_time-time)),screen.get_width(),screen.get_height()/intro_time*(intro_time-time)))
+
+            pygame.display.flip()
+            pygame.display.set_caption(str(round(clock.get_fps())))
+            delta = clock.tick(SETTINGS["FPS"])
+
+    def outro(self,SETTINGS):
         outro_time = 3
         screen = pygame.display.get_surface()
         clock = pygame.time.Clock()
         pygame.time.set_timer(pygame.USEREVENT+1,outro_time*1000)
         run = True
         timestemp = pygame.time.get_ticks()
+        delta = 0
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT+1:
                     run = False
             time = (pygame.time.get_ticks()-timestemp)*0.001
+            self.player.just_collision_updates(self.tiles,delta)
             self.camera.custom_draw(screen,self.player)
             pygame.draw.rect(screen,(0,0,0),pygame.Rect(0,0,screen.get_width(),screen.get_height()/outro_time*time))
 
             pygame.display.flip()
-            pygame.display.set_caption(str(round(pygame.time.get_ticks()*0.001)))
-            clock.tick(SETTINGS["FPS"])
+            pygame.display.set_caption(str(round(clock.get_fps())))
+            delta = clock.tick(SETTINGS["FPS"])
+
+    def next_level(self,name,SETTINGS,spritesheet):
+        self.running = False
+        self.outro(SETTINGS)
         Level(f"assets/levels/{name}",spritesheet).run(SETTINGS,spritesheet)
 
     def run(self,SETTINGS,spritesheet):
@@ -57,7 +83,7 @@ class Level:
         clock = pygame.time.Clock()
         delta = 0
         self.running = True
-
+        self.intro(SETTINGS)
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
