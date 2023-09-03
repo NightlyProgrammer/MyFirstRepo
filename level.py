@@ -38,19 +38,17 @@ class Level:
         pygame.time.set_timer(pygame.USEREVENT+1,intro_time*1000)
         run = True
         timestemp = pygame.time.get_ticks()
-        delta = 0
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT+1:
                     run = False
             time = (pygame.time.get_ticks()-timestemp)*0.001
-            self.player.just_collision_updates(self.tiles,delta)
             self.camera.custom_draw(screen,self.player)
             pygame.draw.rect(screen,(0,0,0),pygame.Rect(0,screen.get_height()-(screen.get_height()/intro_time*(intro_time-time)),screen.get_width(),screen.get_height()/intro_time*(intro_time-time)))
 
             pygame.display.flip()
             pygame.display.set_caption(str(round(clock.get_fps())))
-            delta = clock.tick(SETTINGS["FPS"])
+            clock.tick(SETTINGS["FPS"])
 
     def outro(self,SETTINGS):
         outro_time = 3
@@ -59,19 +57,17 @@ class Level:
         pygame.time.set_timer(pygame.USEREVENT+1,outro_time*1000)
         run = True
         timestemp = pygame.time.get_ticks()
-        delta = 0
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT+1:
                     run = False
             time = (pygame.time.get_ticks()-timestemp)*0.001
-            self.player.just_collision_updates(self.tiles,delta)
             self.camera.custom_draw(screen,self.player)
             pygame.draw.rect(screen,(0,0,0),pygame.Rect(0,0,screen.get_width(),screen.get_height()/outro_time*time))
 
             pygame.display.flip()
             pygame.display.set_caption(str(round(clock.get_fps())))
-            delta = clock.tick(SETTINGS["FPS"])
+            clock.tick(SETTINGS["FPS"])
 
     def next_level(self,name,SETTINGS,spritesheet):
         self.running = False
@@ -84,6 +80,7 @@ class Level:
         delta = 0
         self.running = True
         self.intro(SETTINGS)
+        self.player.no_input = 0.17*10
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):

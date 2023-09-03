@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.008*0.8
         self.speed = 0.5
         self.on_ground = False
+        self.no_input = 0
 
     def collision(self,sprites,x=False,y=False):
         if y:
@@ -40,6 +41,7 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         self.dir.x = 0
+        
         if keys[pygame.K_a]:
             self.dir.x = -1
         elif keys[pygame.K_d]:
@@ -52,11 +54,16 @@ class Player(pygame.sprite.Sprite):
         elif not(keys[pygame.K_w] or keys[pygame.K_SPACE]):
             self.jump_button_pressed = False
         
-        self.rect.x += self.dir.x*self.speed*delta
-        self.collision(sprites,x=True)
-        self.rect.y += self.dir.y*delta
-        self.collision(sprites,y=True)
-        self.dir.y += delta*self.gravity
+        if not self.no_input:
+            self.rect.x += self.dir.x*self.speed*delta
+            self.collision(sprites,x=True)
+            self.rect.y += self.dir.y*delta
+            self.collision(sprites,y=True)
+            self.dir.y += delta*self.gravity
+        else:
+            self.no_input -= delta
+            if self.no_input < 0:
+                self.no_input = 0
 
     def update(self,sprites,delta):
         self.inputs(sprites,delta)
